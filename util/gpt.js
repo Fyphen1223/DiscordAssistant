@@ -15,27 +15,6 @@ class queue {
 	}
 }
 
-async function handleAccess(res, messages) {
-	const url = res.replace('access:', '');
-	const scraped = await scrape(url);
-	const response = await generate(JSON.stringify({
-		'messages': messages,
-		'prompt': scraped,
-		'model': 'GPT-4',
-		'markdown': false,
-	}));
-	//responseはassistantの返答
-	messages.push({
-		'role': 'user',
-		'content': scrape,
-	});
-	messages.push({
-		'role': 'assistant',
-		'content': response,
-	});
-	return { response, messages };
-}
-
 class channelChat {
 	constructor(channelId) {
 		this.channelId = channelId;
@@ -67,9 +46,24 @@ class channelChat {
 			'content': res,
 		});
 		if (res.startsWith('access:')) {
-			let { messageToRespond, messages } = await handleAccess(res, this.messages);
-			this.messages = messages;
-			return messageToRespond;
+			const url = res.replace('access:', '');
+			const scraped = await scrape(url);
+			const response = await generate(JSON.stringify({
+				'messages': this.messages,
+				'prompt': scraped,
+				'model': 'GPT-4',
+				'markdown': false,
+			}));
+			//responseはassistantの返答
+			this.messages.push({
+				'role': 'user',
+				'content': scrape,
+			});
+			this.messages.push({
+				'role': 'assistant',
+				'content': response,
+			});
+			return response;
 		}
 		if (res.startsWith('search:')) {
 			const query = res.replace('search:', '');
@@ -84,6 +78,25 @@ class channelChat {
 				'model': 'GPT-4',
 				'markdown': false,
 			}));
+			if (finalRes.startsWith('access:')) {
+				const url = finalRes.replace('access:', '');
+				const scraped = await scrape(url);
+				const response = await generate(JSON.stringify({
+					'messages': this.messages,
+					'prompt': scraped,
+					'model': 'GPT-4',
+					'markdown': false,
+				}));
+				this.messages.push({
+					'role': 'user',
+					'content': scrape,
+				});
+				this.messages.push({
+					'role': 'assistant',
+					'content': response,
+				});
+				return response;
+			}
 			this.messages.push({
 				'role': 'user',
 				'content': searchText,

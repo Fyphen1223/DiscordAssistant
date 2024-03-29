@@ -1,9 +1,6 @@
 /* eslint-disable no-unused-vars */
 const config = require('./config.json');
-const fs = require('fs');
 
-
-const googlethis = require('googlethis');
 const discord = require('discord.js');
 const client = new discord.Client({
 	intents: [
@@ -32,3 +29,11 @@ const client = new discord.Client({
 	],
 });
 
+client.on('interactionCreate', async (interaction) => {
+	const guildId = interaction.guild.id;
+	if (interaction.commandName) {
+		// Add your code here
+	}
+});
+
+client.login(config.token);
