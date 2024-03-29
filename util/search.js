@@ -14,7 +14,7 @@ async function search(query) {
 		return response;
 	}
 	catch (error) {
-		return 'Error: Request to Google server was rejected with status code 429.';
+		return 'error';
 	}
 }
 

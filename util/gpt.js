@@ -69,6 +69,7 @@ class channelChat {
 			const query = res.replace('search:', '');
 			const searchResult = await search(query);
 			let searchText = '';
+			if (searchResult === 'error') return 'Error: Could not search the web. The server rejected the request with status code 429.';
 			searchResult.results.forEach(element => {
 				searchText = searchText + element.title + ' ' + element.description + ' ' + element.url + '\n';
 			});
