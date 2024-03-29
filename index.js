@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 const config = require('./config.json');
 
@@ -33,6 +34,10 @@ const client = new discord.Client({
 	],
 });
 
+client.on('ready', () => {
+	console.log('Bot is ready');
+});
+
 client.on('messageCreate', async (message) => {
 	if (message.author.bot) return;
 	const channelId = message.channel.id;
@@ -41,7 +46,8 @@ client.on('messageCreate', async (message) => {
 	const ai = aiQueue[channelId];
 	const response = await ai.add(content);
 	message.channel.sendTyping();
-	message.reply(response);
+	console.log(response);
+	message.reply(response.response);
 });
 
 
@@ -58,6 +64,10 @@ client.on('interactionCreate', async (interaction) => {
 			delete aiQueue[channelId];
 		}
 	}
+});
+
+process.on('uncaughtException', (err) => {
+	console.error(err);
 });
 
 client.login(config.token);

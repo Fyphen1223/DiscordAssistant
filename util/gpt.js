@@ -23,7 +23,7 @@ class channelChat {
 	init = async () => {
 		this.messages.push({
 			'role': 'user',
-			'content': fs.readFileSync('../assets/prompt.txt', 'utf8').toString(),
+			'content': fs.readFileSync('./assets/prompt.txt', 'utf8').toString(),
 		});
 		this.messages.push({
 			'role': 'assistant',

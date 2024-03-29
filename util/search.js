@@ -9,8 +9,13 @@ const options = {
 };
 
 async function search(query) {
-	const response = await google.search(query, options);
-	return response;
+	try {
+		const response = await google.search(query, options);
+		return response;
+	}
+	catch (error) {
+		return 'Error: Request to Google server was rejected with status code 429.';
+	}
 }
 
 module.exports = { search };
