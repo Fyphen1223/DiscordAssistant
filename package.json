@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google/generative-ai": "^0.3.1",
     "axios": "^1.6.8",
     "discord.js": "^14.14.1",
     "googlethis": "github:CROSP/google-this",
