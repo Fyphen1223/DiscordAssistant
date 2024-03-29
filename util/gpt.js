@@ -63,7 +63,7 @@ class channelChat {
 				'role': 'assistant',
 				'content': response,
 			});
-			return response;
+			return { response: response, status: 'access' };
 		}
 		if (res.startsWith('search:')) {
 			const query = res.replace('search:', '');
@@ -95,7 +95,7 @@ class channelChat {
 					'role': 'assistant',
 					'content': response,
 				});
-				return response;
+				return { response: response, status: 'search' };
 			}
 			this.messages.push({
 				'role': 'user',
@@ -103,7 +103,7 @@ class channelChat {
 			});
 			return finalRes;
 		}
-		return res;
+		return { response: res, status: 'normal' };
 	};
 }
 

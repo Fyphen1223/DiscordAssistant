@@ -1,6 +1,10 @@
 /* eslint-disable no-unused-vars */
 const config = require('./config.json');
 
+const { queue, channelChat } = require('./util/gpt');
+
+const aiQueue = new queue();
+
 const discord = require('discord.js');
 const client = new discord.Client({
 	intents: [
@@ -29,10 +33,30 @@ const client = new discord.Client({
 	],
 });
 
+client.on('messageCreate', async (message) => {
+	if (message.author.bot) return;
+	const channelId = message.channel.id;
+	if (!aiQueue[channelId]) return;
+	const content = message.content;
+	const ai = aiQueue[channelId];
+	const response = await ai.add(content);
+	message.channel.sendTyping();
+	message.reply(response);
+});
+
+
 client.on('interactionCreate', async (interaction) => {
-	const guildId = interaction.guild.id;
-	if (interaction.commandName) {
-		// Add your code here
+	const channelId = interaction.channel.id;
+	const subcommand = interaction.options.getSubcommand();
+	if (interaction.commandName === 'chat') {
+		if (subcommand === 'enable') {
+			interaction.reply('Enabled chat on this channel.');
+			delete aiQueue[channelId];
+			aiQueue.add(channelId);
+		} else {
+			interaction.reply('Disabled chat on this channel.');
+			delete aiQueue[channelId];
+		}
 	}
 });
 
