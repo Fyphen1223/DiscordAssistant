@@ -9,8 +9,60 @@ const genAI = new GoogleGenerativeAI(config.googleToken);
 const safetySettings = [
 	{
 		category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-		threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+		threshold: HarmBlockThreshold.BLOCK_NONE,
 	},
+	{
+		category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+		threshold: HarmBlockThreshold.BLOCK_NONE,
+	},
+	{
+		category: HarmCategory.HARM_CATEGORY_VIOLENCE,
+		threshold: HarmBlockThreshold.BLOCK_NONE,
+	},
+	{
+		category: HarmCategory.HARM_CATEGORY_MEDICAL,
+		threshold: HarmBlockThreshold.BLOCK_NONE,
+	},
+	{
+		category: HarmCategory.HARM_CATEGORY_ILLEGAL,
+		threshold: HarmBlockThreshold.BLOCK_NONE,
+	},
+	{
+		category: HarmCategory.HARM_CATEGORY_SPAM,
+		threshold: HarmBlockThreshold.BLOCK_NONE,
+	},
+	{
+		category: HarmCategory.HARM_CATEGORY_OTHER,
+		threshold: HarmBlockThreshold.BLOCK_NONE,
+	},
+	{
+		category: HarmCategory.HARM_CATEGORY_PERSONAL_ATTACK,
+		threshold: HarmBlockThreshold.BLOCK_NONE,
+	},
+	{
+		category: HarmCategory.HARM_CATEGORY_TOXICITY,
+		threshold: HarmBlockThreshold.BLOCK_NONE,
+	},
+	{
+		category: HarmCategory.HARM_CATEGORY_THREATS,
+		threshold: HarmBlockThreshold.BLOCK_NONE,
+	},
+	{
+		category: HarmCategory.HARM_CATEGORY_IDENTITY_ATTACK,
+		threshold: HarmBlockThreshold.BLOCK_NONE,
+	},
+	{
+		category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT_ADULT,
+		threshold: HarmBlockThreshold.BLOCK_NONE,
+	},
+	{
+		category: HarmCategory.HARM_CATEGORY_CHILD_SEXUAL_ABUSE,
+		threshold: HarmBlockThreshold.BLOCK_NONE,
+	},
+	{
+		category: HarmCategory.HARM_CATEGORY_CHILD_ENDANGERMENT,
+		threshold: HarmBlockThreshold.BLOCK_NONE,
+	}
 ];
 
 const generate = async (query) => {

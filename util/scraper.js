@@ -1,9 +1,9 @@
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 const axios = require('axios');
-const { webSummarizer } = require('./gpt');
+const gpt = require('./gpt.js');
+const summarizer = new gpt.WebSummarizer();
 
-const summarizer = new webSummarizer();
 
 async function scrape(url) {
 	const res = await axios.get(url);

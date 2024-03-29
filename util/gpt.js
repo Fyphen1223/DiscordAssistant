@@ -2,6 +2,7 @@ const fs = require('fs');
 
 const { generate } = require('./llm');
 const { search } = require('./search');
+const { scrape } = require('./scraper');
 
 class queue {
 	constructor() {
@@ -48,7 +49,7 @@ class channelChat {
 			const url = res.replace('access:', '');
 			const response = await generate(JSON.stringify({
 				'messages': this.messages,
-				'prompt': 'search:' + url,
+				'prompt': await scrape(url),
 				'model': 'GPT-4',
 				'markdown': false,
 			}));
@@ -81,10 +82,7 @@ class channelChat {
 	};
 }
 
-class webSummarizer {
-	constructor() {
-		this.queue = new queue();
-	}
+class WebSummarizer {
 	summarize = async function (content) {
 		const res = await generate(JSON.stringify({
 			'messages': [{
@@ -103,4 +101,4 @@ class webSummarizer {
 	};
 }
 
-module.exports = { queue, channelChat, webSummarizer };
+module.exports = { queue, channelChat, WebSummarizer };

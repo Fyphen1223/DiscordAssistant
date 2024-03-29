@@ -1,9 +1,10 @@
 const google = require('googlethis');
 const options = {
 	page: 0,
-	safe: false,
+	safe: true,
 	parse_ads: false,
 	additional_params: {
+		hl: 'en'
 	}
 };
 
