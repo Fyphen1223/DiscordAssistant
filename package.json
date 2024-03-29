@@ -1,0 +1,22 @@
+{
+  "name": "DiscordAssistant",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.8",
+    "discord.js": "^14.14.1",
+    "googlethis": "github:CROSP/google-this",
+    "jsdom": "^24.0.0",
+    "puppeteer": "^22.6.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0"
+  }
+}
