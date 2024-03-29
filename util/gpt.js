@@ -15,6 +15,27 @@ class queue {
 	}
 }
 
+async function handleAccess(res, messages) {
+	const url = res.replace('access:', '');
+	const scraped = await scrape(url);
+	const response = await generate(JSON.stringify({
+		'messages': messages,
+		'prompt': scraped,
+		'model': 'GPT-4',
+		'markdown': false,
+	}));
+	//responseはassistantの返答
+	messages.push({
+		'role': 'user',
+		'content': scrape,
+	});
+	messages.push({
+		'role': 'assistant',
+		'content': response,
+	});
+	return { response, messages };
+}
+
 class channelChat {
 	constructor(channelId) {
 		this.channelId = channelId;
@@ -46,18 +67,9 @@ class channelChat {
 			'content': res,
 		});
 		if (res.startsWith('access:')) {
-			const url = res.replace('access:', '');
-			const response = await generate(JSON.stringify({
-				'messages': this.messages,
-				'prompt': await scrape(url),
-				'model': 'GPT-4',
-				'markdown': false,
-			}));
-			this.messages.push({
-				'role': 'assistant',
-				'content': response,
-			});
-			return response;
+			let { messageToRespond, messages } = await handleAccess(res, this.messages);
+			this.messages = messages;
+			return messageToRespond;
 		}
 		if (res.startsWith('search:')) {
 			const query = res.replace('search:', '');
@@ -82,23 +94,4 @@ class channelChat {
 	};
 }
 
-class WebSummarizer {
-	summarize = async function (content) {
-		const res = await generate(JSON.stringify({
-			'messages': [{
-				'role': 'user',
-				'content': 'Your mission is to delete ad text(such as PR) from the web-page\'s text that user gives you. Do not summarize, please just delete ad part. You should not delete some type of content such as code, sicne this can affect proper actions. Return ONLY shortend content.',
-			},
-			{
-				'role': 'assistant',
-				'content': 'Yes',
-			}],
-			'prompt': content,
-			'model': 'gpt-3.5-turbo',
-			'markdown': false,
-		}));
-		return res;
-	};
-}
-
-module.exports = { queue, channelChat, WebSummarizer };
+module.exports = { queue, channelChat };
