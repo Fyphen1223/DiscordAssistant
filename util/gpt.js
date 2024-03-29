@@ -69,7 +69,23 @@ class channelChat {
 			const query = res.replace('search:', '');
 			const searchResult = await search(query);
 			let searchText = '';
-			if (searchResult === 'error') return 'Error: Could not search the web. The server rejected the request with status code 429.';
+			if (searchResult === 'error') {
+				const finalRes = await generate(JSON.stringify({
+					'messages': this.messages,
+					'prompt': 'Error: Could not search the web. The server rejected the request with status code 429.',
+					'model': 'GPT-4',
+					'markdown': false,
+				}));
+				this.messages.push({
+					'role': 'user',
+					'content': 'Error: Could not search the web. The server rejected the request with status code 429.',
+				});
+				this.messages.push({
+					'role': 'assistant',
+					'content': finalRes,
+				});
+				return { response: finalRes, status: 'search' };
+			}
 			searchResult.results.forEach(element => {
 				searchText = searchText + element.title + ' ' + element.description + ' ' + element.url + '\n';
 			});
