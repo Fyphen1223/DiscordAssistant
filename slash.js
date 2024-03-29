@@ -18,6 +18,9 @@ const commands = [
 				.setName('disable')
 				.setDescription('Remove GPTs on this channel')
 		),
+	new SlashCommandBuilder()
+		.setName('debug')
+		.setDescription('Debugging')
 ].map((command) => command.toJSON());
 const rest = new REST({ version: '10' }).setToken(config.token);
 const reset = [];

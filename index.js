@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 const config = require('./config.json');
@@ -46,14 +47,20 @@ client.on('messageCreate', async (message) => {
 	const ai = aiQueue[channelId];
 	const response = await ai.add(content);
 	message.channel.sendTyping();
-	console.log(response);
 	message.reply(response.response);
 });
 
 
 client.on('interactionCreate', async (interaction) => {
 	const channelId = interaction.channel.id;
-	const subcommand = interaction.options.getSubcommand();
+	let subcommand;
+	try {
+		subcommand = interaction.options.getSubcommand();
+	} catch (e) {
+	}
+	if (interaction.commandName === 'debug') {
+		interaction.reply(`Debugging\n${JSON.stringify(aiQueue[channelId].messages.slice(1))}`);
+	}
 	if (interaction.commandName === 'chat') {
 		if (subcommand === 'enable') {
 			interaction.reply('Enabled chat on this channel.');
